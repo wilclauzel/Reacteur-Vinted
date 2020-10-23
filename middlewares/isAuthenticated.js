@@ -1,4 +1,7 @@
-const { SERVER_ERROR, getErrorResponse } = require("../services/error");
+const {
+  getErrorMessage,
+  updateServerErrorResponse,
+} = require("../services/error");
 
 //Models
 const User = require("../models/User");
@@ -22,17 +25,17 @@ const isAuthenticated = async (req, res, next) => {
             req.authenticateUser = user;
             return next();
           } else {
-            return res.status(401).json(getErrorResponse("Unauthorized"));
+            return res.status(401).json(getErrorMessage("Unauthorized"));
           }
         } else {
-          return res.status(401).json(getErrorResponse("Unauthorized"));
+          return res.status(401).json(getErrorMessage("Unauthorized"));
         }
       } else {
-        return res.status(401).json(getErrorResponse("Unauthorized"));
+        return res.status(401).json(getErrorMessage("Unauthorized"));
       }
     }
   } catch (error) {
-    res.status(500).json(getErrorResponse(SERVER_ERROR, error));
+    updateServerErrorResponse(res, error);
   }
 };
 
