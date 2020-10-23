@@ -6,7 +6,7 @@ const {
   getErrorMessage,
   updateServerErrorResponse,
 } = require("../services/error");
-const imagePublish = require("../services/image");
+const { imagePublish } = require("../services/image");
 
 //Models
 const User = require("../models/User");
