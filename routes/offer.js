@@ -51,6 +51,7 @@ router.post("/offer/publish", async (req, res) => {
             { EMPLACEMENT: city },
           ],
           owner: user,
+          created_date: new Date(),
         });
 
         //Save image
@@ -183,7 +184,16 @@ router.delete("/offer/publish", async (req, res) => {
 
 router.get("/offers", async (req, res) => {
   try {
-    const { title, priceMin, priceMax, sort, page, pageSize } = req.query;
+    const {
+      title,
+      priceMin,
+      priceMax,
+      sort,
+      page,
+      pageSize,
+      startDate,
+      endDate,
+    } = req.query;
     //const pageSize = 2;
 
     //Get filters
@@ -192,14 +202,24 @@ router.get("/offers", async (req, res) => {
       filters.product_name = new RegExp(title, "i");
     }
     if (priceMin || priceMax) {
-      const minMaxFilter = {};
+      const minMaxPriceFilter = {};
       if (priceMin) {
-        minMaxFilter.$gte = priceMin;
+        minMaxPriceFilter.$gte = priceMin;
       }
       if (priceMax) {
-        minMaxFilter.$lte = priceMax;
+        minMaxPriceFilter.$lte = priceMax;
       }
-      filters.product_price = minMaxFilter;
+      filters.product_price = minMaxPriceFilter;
+    }
+    if (startDate || endDate) {
+      const startEndDateFilter = {};
+      if (startDate) {
+        startEndDateFilter.$gte = startDate;
+      }
+      if (endDate) {
+        startEndDateFilter.$lte = endDate;
+      }
+      filters.created_date = startEndDateFilter;
     }
 
     //Get sorters
@@ -227,7 +247,7 @@ router.get("/offers", async (req, res) => {
     //Get offers as requested
     const offers = await Offer.find(filters)
       .select(
-        "product_name product_description product_details product_price product_image.secure_url"
+        "product_name product_description product_details product_price product_image.secure_url created_date"
       )
       .populate(
         "owner",
@@ -253,7 +273,7 @@ router.get("/offer/:id", async (req, res) => {
     if (isValidObjectId(id)) {
       const offer = await Offer.findById(id)
         .select(
-          "product_name product_description product_details product_price product_image.secure_url product_image.original_filename"
+          "product_name product_description product_details product_price product_image.secure_url product_image.original_filename created_date"
         )
         .populate(
           "owner",

@@ -19,6 +19,7 @@ const Offer = mongoose.model("Offer", {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  created_date: Date,
 });
 
 module.exports = Offer;
