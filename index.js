@@ -4,7 +4,7 @@ const formidable = require("express-formidable");
 const mongoose = require("mongoose");
 const isAuthenticated = require("./middlewares/isAuthenticated");
 const cors = require("cors");
-require("dotenv").config;
+require("dotenv").config();
 
 //Initialize
 const app = express();
