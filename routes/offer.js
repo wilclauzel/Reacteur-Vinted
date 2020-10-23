@@ -67,7 +67,7 @@ router.post("/offer/publish", async (req, res) => {
 
         // Response
         const { owner, product_image, ...rest } = newOffer._doc;
-        const avatar = {};
+        let avatar = {};
         if (owner.account.avatar) {
           avatar = { secure_url: owner.account.avatar.secure_url };
         }
