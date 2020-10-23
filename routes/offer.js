@@ -253,9 +253,12 @@ router.get("/offer/:id", async (req, res) => {
     if (isValidObjectId(id)) {
       const offer = await Offer.findById(id)
         .select(
-          "product_name product_description product_details product_price product_image"
+          "product_name product_description product_details product_price product_image.secure_url product_image.original_filename"
         )
-        .populate("owner", "email account");
+        .populate(
+          "owner",
+          "email account.username account.phone account.avatar.secure_url account.avatar.original_filename"
+        );
       if (offer) {
         res.status(200).json(offer);
       } else {
