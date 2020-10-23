@@ -66,7 +66,20 @@ router.post("/offer/publish", async (req, res) => {
         await newOffer.save();
 
         // Response
-        const { product_image, ...rest } = newOffer._doc;
+        const { owner, product_image, ...rest } = newOffer._doc;
+        const avatar = {};
+        if (owner.account.avatar) {
+          avatar = { secure_url: owner.account.avatar.secure_url };
+        }
+        rest.owner = {
+          _id: owner._id,
+          email: owner.email,
+          account: {
+            username: owner.account.username,
+            phone: owner.account.phone,
+            avatar: avatar,
+          },
+        };
         // Return only the path to get image
         rest.product_image = { secure_url: product_image.secure_url };
         res.status(200).json(rest);
