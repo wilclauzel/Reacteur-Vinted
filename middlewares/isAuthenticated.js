@@ -6,7 +6,11 @@ const {
 //Models
 const User = require("../models/User");
 
-const URL_POST_WITHOUT_TOKEN_AUTHENTICATION = ["/user/signup", "/user/login"];
+const URL_POST_WITHOUT_TOKEN_AUTHENTICATION = [
+  "/user/signup",
+  "/user/login",
+  "/user/initialize",
+];
 
 const isAuthenticated = async (req, res, next) => {
   try {
