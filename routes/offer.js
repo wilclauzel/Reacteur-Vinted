@@ -203,11 +203,12 @@ router.get("/offers", async (req, res) => {
       priceMax,
       sort,
       page,
-      pageSize,
+      // pageSize,
+      limit,
       startDate,
       endDate,
     } = req.query;
-    //const pageSize = 2;
+    const pageSize = limit;
 
     //Get filters
     let filters = {};

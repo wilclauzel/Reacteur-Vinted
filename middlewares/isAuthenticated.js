@@ -15,8 +15,9 @@ const URL_POST_WITHOUT_TOKEN_AUTHENTICATION = [
 const isAuthenticated = async (req, res, next) => {
   try {
     if (
-      req.method === "POST" &&
-      URL_POST_WITHOUT_TOKEN_AUTHENTICATION.includes(req.url)
+      req.method === "GET" ||
+      (req.method === "POST" &&
+        URL_POST_WITHOUT_TOKEN_AUTHENTICATION.includes(req.url))
     ) {
       return next();
     } else {
