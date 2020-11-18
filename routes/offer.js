@@ -22,8 +22,13 @@ const router = express.Router();
 // router.post("/offer/publish", isAuthenticated, async (req, res) => {
 router.post("/offer/publish", async (req, res) => {
   try {
-    if (req.fields && req.files.picture) {
-      const imagePath = req.files.picture.path;
+    if (req.fields && req.files.picture1) {
+      const image1Path = req.files.picture1.path;
+      const image2Path = req.files.picture2 ? req.files.picture2.path : "";
+      const image3Path = req.files.picture3 ? req.files.picture3.path : "";
+      const image4Path = req.files.picture4 ? req.files.picture4.path : "";
+      const image5Path = req.files.picture5 ? req.files.picture5.path : "";
+
       const {
         title,
         description,
@@ -50,23 +55,62 @@ router.post("/offer/publish", async (req, res) => {
             { COULEUR: color },
             { EMPLACEMENT: city },
           ],
+          product_pictures: [],
           owner: user,
           created_date: new Date(),
         });
 
         //Save image
         const result = await imagePublish(
-          imagePath,
+          image1Path,
           `/vinted/offers/${newOffer._id}`,
           "mainImage"
         );
         newOffer.product_image = result;
+        newOffer.product_pictures.push(result);
+        if (image2Path) {
+          const result2 = await imagePublish(
+            image2Path,
+            `/vinted/offers/${newOffer._id}`,
+            "image2"
+          );
+          newOffer.product_pictures.push(result2);
+        }
+        if (image3Path) {
+          const result3 = await imagePublish(
+            image3Path,
+            `/vinted/offers/${newOffer._id}`,
+            "image3"
+          );
+          newOffer.product_pictures.push(result3);
+        }
+        if (image4Path) {
+          const result4 = await imagePublish(
+            image4Path,
+            `/vinted/offers/${newOffer._id}`,
+            "image4"
+          );
+          newOffer.product_pictures.push(result4);
+        }
+        if (image5Path) {
+          const result5 = await imagePublish(
+            image5Path,
+            `/vinted/offers/${newOffer._id}`,
+            "image5"
+          );
+          newOffer.product_pictures.push(result5);
+        }
 
         // Save Offer
         await newOffer.save();
 
         // Response
-        const { owner, product_image, ...rest } = newOffer._doc;
+        const {
+          owner,
+          product_image,
+          product_pictures,
+          ...rest
+        } = newOffer._doc;
         let avatar = {};
         if (owner.account.avatar) {
           avatar = { secure_url: owner.account.avatar.secure_url };
@@ -82,6 +126,12 @@ router.post("/offer/publish", async (req, res) => {
         };
         // Return only the path to get image
         rest.product_image = { secure_url: product_image.secure_url };
+        const pictures = [];
+        for (let i = 0; i < product_pictures.length; i++) {
+          pictures.push({ secure_url: product_pictures[i].secure_url });
+        }
+        rest.product_pictures = pictures;
+
         res.status(200).json(rest);
       } else {
         res.status(400).json(getErrorMessage("Missing user"));
@@ -287,14 +337,25 @@ router.get("/offer/:id", async (req, res) => {
     if (isValidObjectId(id)) {
       const offer = await Offer.findById(id)
         .select(
-          "product_name product_description product_details product_price product_image.secure_url product_image.original_filename created_date"
+          "product_name product_description product_details product_price product_image.secure_url product_image.original_filename product_pictures created_date"
         )
         .populate(
           "owner",
           "email account.username account.phone account.avatar.secure_url account.avatar.original_filename"
         );
+
       if (offer) {
-        res.status(200).json(offer);
+        // Response
+        const { product_pictures, ...rest } = offer._doc;
+        const pictures = [];
+        for (let i = 0; i < product_pictures.length; i++) {
+          pictures.push({
+            secure_url: product_pictures[i].secure_url,
+            original_filename: product_pictures[i].original_filename,
+          });
+        }
+        rest.product_pictures = pictures;
+        res.status(200).json(rest);
       } else {
         res.status(400).json(getErrorMessage("Offer not exists"));
       }
