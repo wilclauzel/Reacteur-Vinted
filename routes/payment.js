@@ -17,7 +17,7 @@ const router = express.Router();
 //Routes
 router.post("/payment", async (req, res) => {
   try {
-    if (req.fields) {
+    if (req.fields && Number.parseFloat(req.fields.amount)) {
       const {
         label,
         quantity,
@@ -34,9 +34,10 @@ router.post("/payment", async (req, res) => {
           "product_name product_description product_price"
         );
         if (offer) {
+          const centAmount = (Number.parseFloat(amount) * 100).toFixed(0);
           // Debits payment
           const stripeResponse = await stripe.charges.create({
-            amount: amount * 100,
+            amount: centAmount,
             currency: currency,
             description: label,
             source: stripeToken,
@@ -47,10 +48,10 @@ router.post("/payment", async (req, res) => {
             const payment = new Payment({
               label,
               quantity,
-              price,
-              delivery_cost: deliveryCost,
-              insurance_cost: insuranceCost,
-              amount,
+              price: Number.parseFloat(price).toFixed(2),
+              delivery_cost: Number.parseFloat(deliveryCost).toFixed(2),
+              insurance_cost: Number.parseFloat(insuranceCost).toFixed(2),
+              amount: Number.parseFloat(amount).toFixed(2),
               currency,
               offer: offerId,
             });
@@ -62,7 +63,7 @@ router.post("/payment", async (req, res) => {
             const result = {
               offerId: offerId,
               quantity: quantity,
-              paidAmount: amount,
+              paidAmount: Number.parseFloat(amount).toFixed(2),
               currency: currency,
               checkedData: stripeResponse.payment_method_details.card.last4,
             };
