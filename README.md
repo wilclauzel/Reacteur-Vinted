@@ -1,4 +1,4 @@
-# Vinted Server - React Application
+# Vinted backend - React Application
 
 <h1 align="center">
 <br>
