@@ -62,7 +62,7 @@ This project proposes the following APIs :
 
 - /offers
 
-| HTTP Verb | Description                                                | Fields Param                                                     |
+| HTTP Verb | Description                                                | Query Param                                                      |
 | --------- | ---------------------------------------------------------- | ---------------------------------------------------------------- |
 | `Get`     | Return a offers page depend on indicated criteria and sort | title, priceMin, priceMax, sort, page, limit, startDate, endDate |
 
