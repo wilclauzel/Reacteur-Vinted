@@ -17,7 +17,7 @@ A server application to manage APIs for user connexion and sale offers managemen
 
 ## General info
 
-This project, carried out as part of the Le Reacteur training, aims to put into practice our knowledge in React on the backend part.
+This project, carried out as part of the [Le Reacteur](https://www.lereacteur.io/) training, aims to put into practice our knowledge in React on the backend part.
 
 The Vinted Clone project is composed of 2 parts the frontend and the backend (application treated here).
 The latter exposes APIs (used by the frontend) and extracts or stores data in a `MongoDB` database.
