@@ -42,7 +42,7 @@ router.post("/offer/publish", async (req, res) => {
 
       const user = req.authenticateUser;
 
-      if (user) {
+      if (user && user.isValidated) {
         //Create Offer
         const newOffer = new Offer({
           product_name: title,
@@ -134,7 +134,13 @@ router.post("/offer/publish", async (req, res) => {
 
         res.status(200).json(rest);
       } else {
-        res.status(400).json(getErrorMessage("Missing user"));
+        res
+          .status(400)
+          .json(
+            getErrorMessage(
+              "Missing user or user not authorized to publish an offer"
+            )
+          );
       }
     } else {
       res.status(400).json(getErrorMessage("Missing mandatory parameter"));
@@ -162,7 +168,7 @@ router.put("/offer/publish", async (req, res) => {
 
       const user = req.authenticateUser;
 
-      if (user) {
+      if (user && user.isValidated) {
         //Load Offer
         const offer = await Offer.findById(id);
 
@@ -199,7 +205,13 @@ router.put("/offer/publish", async (req, res) => {
           res.status(400).json(getErrorMessage("Offer not exists"));
         }
       } else {
-        res.status(400).json(getErrorMessage("Missing user"));
+        res
+          .status(400)
+          .json(
+            getErrorMessage(
+              "Missing user or user not authorized to update an offer"
+            )
+          );
       }
     } else {
       res.status(400).json(getErrorMessage("Missing mandatory parameter"));
@@ -215,7 +227,7 @@ router.delete("/offer/publish", async (req, res) => {
       const id = req.fields.id;
       const user = req.authenticateUser;
 
-      if (user) {
+      if (user && user.isValidated) {
         //Load Offer
         const offer = await Offer.findById(id);
 
@@ -235,7 +247,13 @@ router.delete("/offer/publish", async (req, res) => {
           res.status(400).json(getErrorMessage("Offer not exists"));
         }
       } else {
-        res.status(400).json(getErrorMessage("Missing user"));
+        res
+          .status(400)
+          .json(
+            getErrorMessage(
+              "Missing user or user not authorized to delete an offer"
+            )
+          );
       }
     } else {
       res.status(400).json(getErrorMessage("Missing mandatory parameter"));

@@ -1,11 +1,11 @@
-# Vinted backend - React Application
+# Vinted Clone backend - React Application creation test
 
 <h1 align="center">
 <br>
 <img
 		width="450"
 		alt="vinted Clone - React App"
-		src="preview\vinted-logo.png">
+		src="preview\vintedClone-logo.gif">
 
 <br>
 <br>
@@ -19,8 +19,10 @@ A server application to manage APIs for user connexion and sale offers managemen
 
 This project, carried out as part of the Le Reacteur training, aims to put into practice our knowledge in React on the backend part.
 
-The Vinted project is composed of 2 parts the frontend and the backend (application treated here).
+The Vinted Clone project is composed of 2 parts the frontend and the backend (application treated here).
 The latter exposes APIs (used by the frontend) and extracts or stores data in a `MongoDB` database.
+
+This project, with a pedagogical aim, should allow us to put forward our knowledge to employers.
 
 ## Overview
 

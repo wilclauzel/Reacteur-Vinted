@@ -13,6 +13,10 @@ const User = mongoose.model("User", {
     phone: String,
     avatar: Object,
   },
+  isValidated: {
+    type: Boolean,
+    default: false,
+  },
   token: String,
   hash: String,
   salt: String,

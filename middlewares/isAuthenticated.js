@@ -25,7 +25,9 @@ const isAuthenticated = async (req, res, next) => {
         const token = req.headers.authorization.replace("Bearer ", "");
         if (token) {
           // Get user without authetication properties
-          const user = await User.findOne({ token }).select("email account");
+          const user = await User.findOne({ token }).select(
+            "email account isValidated"
+          );
           if (user) {
             req.authenticateUser = user;
             return next();
